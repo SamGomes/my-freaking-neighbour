@@ -16,6 +16,8 @@ public class GameManager : MonoBehaviour
     List<Player> players;
     List<EnvironmentElement> possibleEnvElements;
     int maxEnvElements;
+    //public Attack attack;
+
 
     List<EnvironmentElement> currEnvElements;
 
@@ -41,11 +43,15 @@ public class GameManager : MonoBehaviour
         possibleEnvElements.Add(new EnvironmentElement(EnvElementType.Swagger, guyPrefab, initialPos, orientation, 20.0f));
 
         StartCoroutine(SpawnEnvElements(spawnChoiceTimeInSeconds));
+
+
     }
 
     // Update is called once per frame
     void Update()
     {
+
+
     }
 
 
