@@ -11,9 +11,25 @@ public class GameManager : MonoBehaviour
     public GameObject UILifeBarObjectP1;
     public GameObject UILifeBarObjectP2;
 
+    public GameObject spriteAerialLeft;
+    public GameObject spriteAerialRight;
+    public GameObject spriteAerialFailLeft;
+    public GameObject spriteAerialFailRight;
+    public GameObject spriteVerbalRight;
+    public GameObject spriteVerbalLeft;
+
+    public GameObject spriteBirdRight;
+    public GameObject spriteBirdLeft;
+
+    public GameObject spriteNoiseRight;
+    public GameObject spriteNoiseLeft;
+
+
+
     public GameObject carPrefab;
     public GameObject girlPrefab;
     public GameObject guyPrefab;
+   
 
     public GameObject camera;
 
@@ -23,7 +39,6 @@ public class GameManager : MonoBehaviour
     List<Player> players;
     List<EnvironmentElement> possibleEnvElements;
     int maxEnvElements;
-    //public Attack attack;
 
 
     List<EnvironmentElement> currEnvElements;
@@ -45,14 +60,9 @@ public class GameManager : MonoBehaviour
         float maxLifeBarSize = 88.0f;
 
         players = new List<Player>();
-        players.Add(new Player(UILifeBarObjectP1, maxLifeBarSize));
-        players.Add(new Player(UILifeBarObjectP2, maxLifeBarSize));
-
-        GameObject gos = GameObject.FindGameObjectsWithTag("AttackManager")[0];
-        AttackManager am =  gos.GetComponent<AttackManager>();
-
-        am.playerLeft  = players[0];
-        am.playerRight = players[1];
+        players.Add(new Player(this, UILifeBarObjectP1, maxLifeBarSize, spriteAerialLeft, spriteAerialFailLeft, spriteVerbalLeft, spriteBirdLeft, spriteNoiseLeft, 80));
+        players.Add(new Player(this, UILifeBarObjectP2, maxLifeBarSize, spriteAerialRight, spriteAerialFailRight, spriteVerbalRight, spriteBirdRight, spriteNoiseRight, 80));
+        
         
         currEnvElements = new List<EnvironmentElement>();
         possibleEnvElements = new List<EnvironmentElement>();
@@ -71,6 +81,9 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Player player1 = players[0];
+        Player player2 = players[1];
+
         if (P1Attack && Input.GetKeyDown("q"))
         {
             attP1 = "A";
@@ -91,7 +104,6 @@ public class GameManager : MonoBehaviour
             attP1 = "IM";
             P1Attack = false;
         }
-
         else if (P2Attack && Input.GetKeyDown("h"))
         {
             attP2 = "A";
@@ -116,6 +128,60 @@ public class GameManager : MonoBehaviour
 
         if(!P1Attack && !P2Attack)
             envChangeRespect(attP1, attP2);
+
+
+        
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            player1.PerformAerialAttack(player2);
+            //activeAttackL = AttackType.Verbal;
+        }
+
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            player1.PerformBirdAttack(player2);
+        }
+
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            player1.PerformVerbalAttack(player2);
+            //activeAttackL = AttackType.Aerial;
+        }
+
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            player1.PerformNoiseAttack(player2);
+        }
+
+
+        // Player 2 
+       
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            player2.PerformAerialAttack(player1); 
+            //activeAttackR = AttackType.Verbal;
+        }
+
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            player2.PerformVerbalAttack(player1);
+            //activeAttackR = AttackType.Aerial;
+
+
+        }
+
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            player2.PerformBirdAttack(player1);
+        }
+
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            player2.PerformNoiseAttack(player1);
+        }
+        
+
+
     }
 
     IEnumerator DecreaseGlobalTimer(float delay)
@@ -145,7 +211,7 @@ public class GameManager : MonoBehaviour
         else if (attP1 == "R" && attP2 == "IV")
         {
             //att2 leva dano
-            if(currEnvElements[0].GetTypee() == EnvElementType.Car) { }
+            if(currEnvElements[0].GetType() == EnvElementType.Car) { }
             else
             {
                 players[1].removeReputation(5);
@@ -154,7 +220,7 @@ public class GameManager : MonoBehaviour
         else if (attP1 == "IV" && attP2 == "R")
         {
             //att1 leva dano
-            if (currEnvElements[0].GetTypee() == EnvElementType.Car) { }
+            if (currEnvElements[0].GetType() == EnvElementType.Car) { }
             else
             {
                 players[0].removeReputation(5);
@@ -163,7 +229,7 @@ public class GameManager : MonoBehaviour
         else if (attP1 == "IV" && attP2 == "IM")
         {
             //att2 leva dano
-            if (currEnvElements[0].GetTypee() == EnvElementType.Car) { }
+            if (currEnvElements[0].GetType() == EnvElementType.Car) { }
             else
             {
                 players[1].removeReputation(5);
@@ -172,7 +238,7 @@ public class GameManager : MonoBehaviour
         else if (attP1 == "IM" && attP2 == "IV")
         {
             //att1 leva dano
-            if (currEnvElements[0].GetTypee() == EnvElementType.Car) { }
+            if (currEnvElements[0].GetType() == EnvElementType.Car) { }
             else
             {
                 players[0].removeReputation(5);
@@ -191,7 +257,7 @@ public class GameManager : MonoBehaviour
         else
         {
             // levam os dois dano
-            if (currEnvElements[0].GetTypee() == EnvElementType.Car && (attP1 == "R" && attP2 == "R") || (attP1 == "IV" && attP2 == "IV")) { }
+            if (currEnvElements[0].GetType() == EnvElementType.Car && (attP1 == "R" && attP2 == "R") || (attP1 == "IV" && attP2 == "IV")) { }
             else
             {
                 players[0].removeReputation(5);
@@ -204,7 +270,7 @@ public class GameManager : MonoBehaviour
 
     private void envChangeRespect(string p1, string p2)
     {
-        if(currEnvElements[0].GetTypee() == EnvElementType.Car)
+        if(currEnvElements[0].GetType() == EnvElementType.Car)
         {
             if(p1 == "A")
             {
@@ -241,7 +307,7 @@ public class GameManager : MonoBehaviour
 
             changeRespect();
         }
-        else if(currEnvElements[0].GetTypee() == EnvElementType.Girl)
+        else if(currEnvElements[0].GetType() == EnvElementType.Girl)
         {
              if(p1 == "A")
             {
