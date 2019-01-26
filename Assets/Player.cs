@@ -14,6 +14,10 @@ public class Player
     private RectTransform UILifeBarEndRT;
     private float maxLifeBarSize;
 
+    //my sprite
+    GameObject myGameObject;
+
+    //attack sprites
     GameObject aerialAttackSprite;
     GameObject aerialAttackFailSprite;
     GameObject verbalAttackSprite;
@@ -25,7 +29,7 @@ public class Player
 
     bool isAttacking;
 
-    public Player (GameManager gameManager, GameObject UILifeBarObject, float maxLifeBarSize, 
+    public Player (GameManager gameManager, GameObject myGameObject, GameObject UILifeBarObject, float maxLifeBarSize, 
         GameObject aerialAttackSprite, GameObject aerialAttackFailSprite, GameObject verbalAttackSprite, GameObject birdAttackSprite, GameObject noiseAttackSprite,
         int successAttackProbability)
     {
@@ -49,6 +53,8 @@ public class Player
         this.isAttacking = false;
 
         this.gameManager = gameManager;
+
+        this.myGameObject = myGameObject;
 
 
     }
@@ -79,12 +85,14 @@ public class Player
         //if (!isAttacking)
         {
             //isAttacking = true;
+            myGameObject.SetActive(false);
             Animator animator = attackSprite.GetComponent<Animator>();
             while (!animator.GetCurrentAnimatorStateInfo(0).IsName("end"))
             {
                 yield return null;
             }
             attackSprite.SetActive(false);
+            myGameObject.SetActive(true);
             target.removeReputation(damage);
             isAttacking = false;
         }

@@ -11,6 +11,9 @@ public class GameManager : MonoBehaviour
     public GameObject UILifeBarObjectP1;
     public GameObject UILifeBarObjectP2;
 
+    public GameObject player1Sprite;
+    public GameObject player2Sprite;
+
     public GameObject spriteAerialLeft;
     public GameObject spriteAerialRight;
     public GameObject spriteAerialFailLeft;
@@ -60,8 +63,8 @@ public class GameManager : MonoBehaviour
         float maxLifeBarSize = 88.0f;
 
         players = new List<Player>();
-        players.Add(new Player(this, UILifeBarObjectP1, maxLifeBarSize, spriteAerialLeft, spriteAerialFailLeft, spriteVerbalLeft, spriteBirdLeft, spriteNoiseLeft, 80));
-        players.Add(new Player(this, UILifeBarObjectP2, maxLifeBarSize, spriteAerialRight, spriteAerialFailRight, spriteVerbalRight, spriteBirdRight, spriteNoiseRight, 80));
+        players.Add(new Player(this, player1Sprite, UILifeBarObjectP1, maxLifeBarSize, spriteAerialLeft, spriteAerialFailLeft, spriteVerbalLeft, spriteBirdLeft, spriteNoiseLeft, 80));
+        players.Add(new Player(this, player2Sprite, UILifeBarObjectP2, maxLifeBarSize, spriteAerialRight, spriteAerialFailRight, spriteVerbalRight, spriteBirdRight, spriteNoiseRight, 80));
         
         
         currEnvElements = new List<EnvironmentElement>();
@@ -134,7 +137,6 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.A))
         {
             player1.PerformAerialAttack(player2);
-            //activeAttackL = AttackType.Verbal;
         }
 
         if (Input.GetKeyDown(KeyCode.W))
@@ -145,7 +147,6 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.S))
         {
             player1.PerformVerbalAttack(player2);
-            //activeAttackL = AttackType.Aerial;
         }
 
         if (Input.GetKeyDown(KeyCode.D))
@@ -159,14 +160,11 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.J))
         {
             player2.PerformAerialAttack(player1); 
-            //activeAttackR = AttackType.Verbal;
         }
 
         if (Input.GetKeyDown(KeyCode.K))
         {
             player2.PerformVerbalAttack(player1);
-            //activeAttackR = AttackType.Aerial;
-
 
         }
 
