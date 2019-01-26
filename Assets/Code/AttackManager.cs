@@ -55,22 +55,17 @@ public class AttackManager : MonoBehaviour
     {
 
         Animator svlAnimator = spriteVisualLeft.GetComponent<Animator>();
-        bool isEndSVL = svlAnimator.GetCurrentAnimatorStateInfo(0).IsName("end");
-
         Animator svrAnimator = spriteVisualRight.GetComponent<Animator>();
-        bool isEndSVR = svrAnimator.GetCurrentAnimatorStateInfo(0).IsName("end");
-          
-
         Animator salAnimator = spriteAerialLeft.GetComponent<Animator>();
-        bool isEndSAL = salAnimator.GetCurrentAnimatorStateInfo(0).IsName("end");
-
         Animator sarAnimator = spriteAerialRight.GetComponent<Animator>();
-        bool isEndSAR = sarAnimator.GetCurrentAnimatorStateInfo(0).IsName("end");
-
         Animator saflAnimator = spriteAerialFailLeft.GetComponent<Animator>();
-        bool isEndSAFL = saflAnimator.GetCurrentAnimatorStateInfo(0).IsName("end");
-
         Animator safrAnimator = spriteAerialFailRight.GetComponent<Animator>();
+
+        bool isEndSVL = svlAnimator.GetCurrentAnimatorStateInfo(0).IsName("end");       
+        bool isEndSVR = svrAnimator.GetCurrentAnimatorStateInfo(0).IsName("end");                
+        bool isEndSAL = salAnimator.GetCurrentAnimatorStateInfo(0).IsName("end");
+        bool isEndSAR = sarAnimator.GetCurrentAnimatorStateInfo(0).IsName("end");
+        bool isEndSAFL = saflAnimator.GetCurrentAnimatorStateInfo(0).IsName("end");
         bool isEndSAFR = safrAnimator.GetCurrentAnimatorStateInfo(0).IsName("end");
 
         isPlayL = spriteVisualLeft.activeSelf || spriteAerialLeft.activeSelf || spriteAerialFailLeft.activeSelf;

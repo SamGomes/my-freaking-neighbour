@@ -91,13 +91,11 @@ public class GameManager : MonoBehaviour
             attP1 = "IM";
             P1Attack = false;
         }
-
         else if (P2Attack && Input.GetKeyDown("h"))
         {
             attP2 = "A";
             P2Attack = false;
         }
-
         else if (P2Attack && Input.GetKeyDown("j"))
         {
             attP2 = "R";
@@ -145,7 +143,7 @@ public class GameManager : MonoBehaviour
         else if (attP1 == "R" && attP2 == "IV")
         {
             //att2 leva dano
-            if(currEnvElements[0].GetTypee() == EnvElementType.Car) { }
+            if(currEnvElements[0].GetType() == EnvElementType.Car) { }
             else
             {
                 players[1].reputation -= 5;
@@ -154,7 +152,7 @@ public class GameManager : MonoBehaviour
         else if (attP1 == "IV" && attP2 == "R")
         {
             //att1 leva dano
-            if (currEnvElements[0].GetTypee() == EnvElementType.Car) { }
+            if (currEnvElements[0].GetType() == EnvElementType.Car) { }
             else
             {
                 players[0].reputation -= 5;
@@ -163,7 +161,7 @@ public class GameManager : MonoBehaviour
         else if (attP1 == "IV" && attP2 == "IM")
         {
             //att2 leva dano
-            if (currEnvElements[0].GetTypee() == EnvElementType.Car) { }
+            if (currEnvElements[0].GetType() == EnvElementType.Car) { }
             else
             {
                 players[1].reputation -= 5;
@@ -172,7 +170,7 @@ public class GameManager : MonoBehaviour
         else if (attP1 == "IM" && attP2 == "IV")
         {
             //att1 leva dano
-            if (currEnvElements[0].GetTypee() == EnvElementType.Car) { }
+            if (currEnvElements[0].GetType() == EnvElementType.Car) { }
             else
             {
                 players[0].reputation -= 5;
@@ -191,7 +189,7 @@ public class GameManager : MonoBehaviour
         else
         {
             // levam os dois dano
-            if (currEnvElements[0].GetTypee() == EnvElementType.Car && (attP1 == "R" && attP2 == "R") || (attP1 == "IV" && attP2 == "IV")) { }
+            if (currEnvElements[0].GetType() == EnvElementType.Car && (attP1 == "R" && attP2 == "R") || (attP1 == "IV" && attP2 == "IV")) { }
             else
             {
                 players[0].reputation -= 5;
@@ -204,7 +202,7 @@ public class GameManager : MonoBehaviour
 
     private void envChangeRespect(string p1, string p2)
     {
-        if(currEnvElements[0].GetTypee() == EnvElementType.Car)
+        if(currEnvElements[0].GetType() == EnvElementType.Car)
         {
             if(p1 == "A")
             {
@@ -241,7 +239,7 @@ public class GameManager : MonoBehaviour
 
             changeRespect();
         }
-        else if(currEnvElements[0].GetTypee() == EnvElementType.Girl)
+        else if(currEnvElements[0].GetType() == EnvElementType.Girl)
         {
              if(p1 == "A")
             {
