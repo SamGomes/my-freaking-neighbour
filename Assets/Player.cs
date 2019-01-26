@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
-    private int reputation;
+    public int reputation;
     private bool canAttack;
 
     private RectTransform UILifeBarPoleRT;
