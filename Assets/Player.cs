@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
-    private int reputation;
+    public int reputation;
     private bool canAttack;
 
     private RectTransform UILifeBarPoleRT;
@@ -25,6 +25,20 @@ public class Player : MonoBehaviour
     void Attack(EnvironmentElement envElement)
     {
 
+    }
+    
+    public void removeReputation(int remove)
+    {
+        this.reputation -= remove;
+        if ( this.reputation < 0 ) { this.reputation = 0; }
+        ChangeBarLife(this.reputation);
+    }
+
+    public void addReputation(int add)
+    {
+        this.reputation += add;
+        if(this.reputation > 100) { this.reputation = 100; }
+        ChangeBarLife(this.reputation);
     }
 
     public void ChangeBarLife(float life)
