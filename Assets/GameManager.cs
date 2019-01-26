@@ -1,9 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    public Text UITimer;
+    private int globalTimer;
+
+    public GameObject UILifeBarObjectP1;
+    public GameObject UILifeBarObjectP2;
+
     public GameObject carPrefab;
     public GameObject girlPrefab;
     public GameObject guyPrefab;
@@ -24,14 +31,19 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        globalTimer = 100;
+
         maxEnvElements = 1;
 
         spawnChoiceTimeInSeconds = 5;
         spawnProbability = 0.5f;
 
+        float maxLifeBarSize = 88.0f;
+
         players = new List<Player>();
-        players.Add(new Player());
-        players.Add(new Player());
+        players.Add(new Player(UILifeBarObjectP1, maxLifeBarSize));
+        players.Add(new Player(UILifeBarObjectP2, maxLifeBarSize));
+
 
         currEnvElements = new List<EnvironmentElement>();
         possibleEnvElements = new List<EnvironmentElement>();
@@ -44,7 +56,7 @@ public class GameManager : MonoBehaviour
 
         StartCoroutine(SpawnEnvElements(spawnChoiceTimeInSeconds));
 
-
+        StartCoroutine(DecreaseGlobalTimer(1));
     }
 
     // Update is called once per frame
@@ -54,8 +66,19 @@ public class GameManager : MonoBehaviour
 
     }
 
+    IEnumerator DecreaseGlobalTimer(float delay)
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(delay);
+            if (globalTimer > 0)
+            {
+                UITimer.text = (--globalTimer).ToString();
+            }
+        }
+    }
 
-    IEnumerator SpawnEnvElements(double delay)
+    IEnumerator SpawnEnvElements(float delay)
     {
         while (true)
         {
@@ -74,7 +97,6 @@ public class GameManager : MonoBehaviour
                 newEnvElement.Spawn();
             }
             yield return new WaitForSeconds(spawnChoiceTimeInSeconds);
-            Debug.Log("passou");
         }
     }
 
