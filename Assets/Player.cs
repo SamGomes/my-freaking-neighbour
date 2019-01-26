@@ -3,6 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum AttackType
+{
+    Aerial,
+    Verbal,
+    Bird, //Manguito
+    Noise
+}
+
 public class Player
 {
     GameManager gameManager;
@@ -22,6 +30,7 @@ public class Player
 
     bool successfulLastAttack;
     int successAttackProbability;
+    public AttackType attackActivo;
 
     bool isAttacking;
 
@@ -84,69 +93,143 @@ public class Player
             {
                 yield return null;
             }
+
             attackSprite.SetActive(false);
             target.removeReputation(damage);
             isAttacking = false;
         }
     }
 
+    public void anular()
+    {
+        this.aerialAttackSprite.SetActive(false);
+        this.aerialAttackFailSprite.SetActive(false);
+        this.verbalAttackSprite.SetActive(false);
+        this.birdAttackSprite.SetActive(false);
+        this.noiseAttackSprite.SetActive(false);
+        this.isAttacking = false;
+    }
+
+    public void anular(int damage)
+    {
+        this.aerialAttackSprite.SetActive(false);
+        this.aerialAttackFailSprite.SetActive(false);
+        this.verbalAttackSprite.SetActive(false);
+        this.birdAttackSprite.SetActive(false);
+        this.noiseAttackSprite.SetActive(false);
+
+        this.removeReputation(damage);
+        this.isAttacking = false;
+    }
+
     //attack methods
-    public void PerformAerialAttack(Player target)
+    public void PerformAerialAttack(Player target, EnvElementType type)
     {
         bool success = IsSuccess();
 
         if (!isAttacking)
         {
             isAttacking = true;
+            attackActivo = AttackType.Aerial;
+
             if (success)
             {
-                this.aerialAttackSprite.SetActive(true);
-                gameManager.StartCoroutine(FinishAttack(aerialAttackSprite, 10, target));
+
+                if (target.isAttacking && target.attackActivo == AttackType.Noise)
+                {
+                    target.anular();
+                }
+
+                {
+                    this.aerialAttackSprite.SetActive(true);
+                    gameManager.StartCoroutine(FinishAttack(aerialAttackSprite, 10, target));
+                }
+
+
             }
             else
             {
                 this.aerialAttackFailSprite.SetActive(true);
                 gameManager.StartCoroutine(FinishAttack(aerialAttackFailSprite, 0, target));
-            }
-            
-        }
-         
+            }            
+        }        
         
     }
-    public void PerformVerbalAttack(Player target)
+    public void PerformVerbalAttack(Player target, EnvElementType type)
     {
         if (!isAttacking)
         {
-            isAttacking = true;
-            this.verbalAttackSprite.SetActive(true);
-            gameManager.StartCoroutine(FinishAttack(verbalAttackSprite, 10, target));
-        }
+            this.attackActivo = AttackType.Verbal;
 
-       
+            if (target.isAttacking && target.attackActivo == AttackType.Noise)
+            {
+                //Anulado
+            }
+            else
+            {
+                if (target.isAttacking && target.attackActivo == AttackType.Bird)
+                {
+                    target.anular();
+                }
 
+                {
+                    isAttacking = true;
+                    this.verbalAttackSprite.SetActive(true);
+                    gameManager.StartCoroutine(FinishAttack(verbalAttackSprite, 10, target));
+                }
+            }
+        }      
     }
-    public void PerformBirdAttack(Player target)
+    public void PerformBirdAttack(Player target, EnvElementType type)
     {
 
         if (!isAttacking)
         {
-            isAttacking = true;
-            this.birdAttackSprite.SetActive(true);
-            gameManager.StartCoroutine(FinishAttack(birdAttackSprite, 10, target));
-        }            
+            this.attackActivo = AttackType.Bird;
 
-     
+            if (target.isAttacking && target.attackActivo == AttackType.Verbal)
+            {
+
+            }
+            else
+            {
+                if (target.isAttacking && target.attackActivo == AttackType.Aerial)
+                {
+                    target.anular();
+                }
+
+                {
+                    isAttacking = true;
+                    this.birdAttackSprite.SetActive(true);
+                    gameManager.StartCoroutine(FinishAttack(birdAttackSprite, 10, target));
+                }
+            }                        
+        }               
     }
-    public void PerformNoiseAttack(Player target)
+    public void PerformNoiseAttack(Player target, EnvElementType type)
     {
 
         if (!isAttacking)
         {
-            isAttacking = true;
-            this.noiseAttackSprite.SetActive(true);
-            gameManager.StartCoroutine(FinishAttack(noiseAttackSprite, 10, target));
-        }
-      
+            this.attackActivo = AttackType.Noise;
+            
+            if (target.isAttacking && target.attackActivo == AttackType.Aerial)
+            {
+                //Anulado
+            }
+            else
+            {
+                if (target.isAttacking && target.attackActivo == AttackType.Verbal)
+                {
+                    target.anular();
+                }
+                
+                isAttacking = true;
+                this.noiseAttackSprite.SetActive(true);
+                gameManager.StartCoroutine(FinishAttack(noiseAttackSprite, 10, target));
+                
+            }
+        }      
     }
 
     private bool IsSuccess()

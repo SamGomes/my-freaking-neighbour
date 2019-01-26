@@ -84,7 +84,7 @@ public class GameManager : MonoBehaviour
         Player player1 = players[0];
         Player player2 = players[1];
 
-        if (P1Attack && Input.GetKeyDown("q"))
+        if (P1Attack && Input.GetKeyDown("q"))//
         {
             attP1 = "A";
             P1Attack = false;
@@ -133,24 +133,27 @@ public class GameManager : MonoBehaviour
         
         if (Input.GetKeyDown(KeyCode.A))
         {
-            player1.PerformAerialAttack(player2);
+            player1.PerformAerialAttack(player2, currEnvElements[0].GetType());
+            //attP1 = "A";
             //activeAttackL = AttackType.Verbal;
         }
 
         if (Input.GetKeyDown(KeyCode.W))
         {
-            player1.PerformBirdAttack(player2);
+            player1.PerformBirdAttack(player2, currEnvElements[0].GetType());
         }
 
         if (Input.GetKeyDown(KeyCode.S))
         {
-            player1.PerformVerbalAttack(player2);
+            player1.PerformVerbalAttack(player2, currEnvElements[0].GetType());
+
             //activeAttackL = AttackType.Aerial;
         }
 
         if (Input.GetKeyDown(KeyCode.D))
         {
-            player1.PerformNoiseAttack(player2);
+            player1.PerformNoiseAttack(player2, currEnvElements[0].GetType());
+            attP1 = "R";
         }
 
 
@@ -158,13 +161,13 @@ public class GameManager : MonoBehaviour
        
         if (Input.GetKeyDown(KeyCode.J))
         {
-            player2.PerformAerialAttack(player1); 
+            player2.PerformAerialAttack(player1, currEnvElements[0].GetType()); 
             //activeAttackR = AttackType.Verbal;
         }
 
         if (Input.GetKeyDown(KeyCode.K))
         {
-            player2.PerformVerbalAttack(player1);
+            player2.PerformVerbalAttack(player1, currEnvElements[0].GetType());
             //activeAttackR = AttackType.Aerial;
 
 
@@ -172,12 +175,12 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.I))
         {
-            player2.PerformBirdAttack(player1);
+            player2.PerformBirdAttack(player1, currEnvElements[0].GetType());
         }
 
         if (Input.GetKeyDown(KeyCode.L))
         {
-            player2.PerformNoiseAttack(player1);
+            player2.PerformNoiseAttack(player1, currEnvElements[0].GetType());
         }
         
 
@@ -201,6 +204,7 @@ public class GameManager : MonoBehaviour
         if(attP1 == "A" && attP2 == "R")
         {
             //attP2 leva dano
+
             players[1].removeReputation(5);
         }
         else if(attP1 == "R" && attP2 == "A")
@@ -386,6 +390,8 @@ public class GameManager : MonoBehaviour
             }
             changeRespect();
         }
+
+
     }
 
     IEnumerator SpawnEnvElements(double delay)
