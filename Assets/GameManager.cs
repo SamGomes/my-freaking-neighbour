@@ -135,12 +135,12 @@ public class GameManager : MonoBehaviour
         if(attP1 == "A" && attP2 == "R")
         {
             //attP2 leva dano
-            players[1].reputation -= 5;
+            players[1].removeReputation(5);
         }
         else if(attP1 == "R" && attP2 == "A")
         {
             //attP1 leva dano 
-            players[0].reputation -= 5;
+            players[0].removeReputation(5);
         }
         else if (attP1 == "R" && attP2 == "IV")
         {
@@ -148,7 +148,7 @@ public class GameManager : MonoBehaviour
             if(currEnvElements[0].GetTypee() == EnvElementType.Car) { }
             else
             {
-                players[1].reputation -= 5;
+                players[1].removeReputation(5);
             }
         }
         else if (attP1 == "IV" && attP2 == "R")
@@ -157,7 +157,7 @@ public class GameManager : MonoBehaviour
             if (currEnvElements[0].GetTypee() == EnvElementType.Car) { }
             else
             {
-                players[0].reputation -= 5;
+                players[0].removeReputation(5);
             }
         }
         else if (attP1 == "IV" && attP2 == "IM")
@@ -166,7 +166,7 @@ public class GameManager : MonoBehaviour
             if (currEnvElements[0].GetTypee() == EnvElementType.Car) { }
             else
             {
-                players[1].reputation -= 5;
+                players[1].removeReputation(5);
             }
         }
         else if (attP1 == "IM" && attP2 == "IV")
@@ -175,18 +175,18 @@ public class GameManager : MonoBehaviour
             if (currEnvElements[0].GetTypee() == EnvElementType.Car) { }
             else
             {
-                players[0].reputation -= 5;
+                players[0].removeReputation(5);
             }
         }
         else if (attP1 == "IM" && attP2 == "A")
         {
             //att2 leva dano
-            players[1].reputation -= 5;
+            players[1].removeReputation(5);
         }
         else if (attP1 == "A" && attP2 == "IM")
         {
             //att1 leva dano
-            players[0].reputation -= 5;
+            players[0].removeReputation(5);
         }
         else
         {
@@ -194,8 +194,8 @@ public class GameManager : MonoBehaviour
             if (currEnvElements[0].GetTypee() == EnvElementType.Car && (attP1 == "R" && attP2 == "R") || (attP1 == "IV" && attP2 == "IV")) { }
             else
             {
-                players[0].reputation -= 5;
-                players[1].reputation -= 5;
+                players[0].removeReputation(5);
+                players[1].removeReputation(5);
             }
         }
         P1Attack = true;
@@ -249,16 +249,16 @@ public class GameManager : MonoBehaviour
             }
             else if(p1 == "R")
             {
-                players[0].reputation += 5;
-                players[1].reputation -= 5;
+                players[0].addReputation(5);
+                players[1].removeReputation(5);
             }
             else if (p1 == "IV")
             {
-                players[0].reputation -= 5;
+                players[0].removeReputation(5);
             }
             else if(p1 == "IM")
             {
-                players[0].reputation -= 5;
+                players[0].removeReputation(5);
             }
             else if (p2 == "A")
             {
@@ -266,16 +266,16 @@ public class GameManager : MonoBehaviour
             }
             else if (p2 == "R")
             {
-                players[1].reputation += 5;
-                players[0].reputation -= 5;
+                players[1].addReputation(5);
+                players[0].removeReputation(5);
             }
             else if (p2 == "IV")
             {
-                players[1].reputation -= 5;
+                players[1].removeReputation(5);
             }
             else if (p2 == "IM")
             {
-                players[1].reputation -= 5;
+                players[1].removeReputation(5);
             }
             changeRespect();
 
@@ -288,17 +288,17 @@ public class GameManager : MonoBehaviour
             }
             else if (p1 == "R")
             {
-                players[0].reputation -= 5;
+                players[0].removeReputation(5);
             }
             else if (p1 == "IV")
             {
-                players[0].reputation += 5;
-                players[1].reputation -= 5;
+                players[0].addReputation(5);
+                players[1].removeReputation(5);
             }
             else if (p1 == "IM")
             {
-                players[0].reputation += 5;
-                players[1].reputation -= 5;
+                players[0].addReputation(5);
+                players[1].removeReputation(5);
             }
             else if (p2 == "A")
             {
@@ -306,17 +306,17 @@ public class GameManager : MonoBehaviour
             }
             else if (p2 == "R")
             {
-                players[1].reputation -= 5;
+                players[1].removeReputation(5);
             }
             else if (p2 == "IV")
             {
-                players[1].reputation += 5;
-                players[0].reputation -= 5;
+                players[1].addReputation(5);
+                players[0].removeReputation(5);
             }
             else if (p2 == "IM")
             {
-                players[1].reputation += 5;
-                players[0].reputation -= 5;
+                players[1].addReputation(5);
+                players[0].removeReputation(5);
             }
             changeRespect();
         }

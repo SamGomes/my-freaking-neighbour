@@ -34,6 +34,13 @@ public class Player : MonoBehaviour
         ChangeBarLife(this.reputation);
     }
 
+    public void addReputation(int add)
+    {
+        this.reputation += add;
+        if(this.reputation > 100) { this.reputation = 100; }
+        ChangeBarLife(this.reputation);
+    }
+
     public void ChangeBarLife(float life)
     {
         UILifeBarPoleRT.sizeDelta = new Vector2(life/100 * maxLifeBarSize, UILifeBarPoleRT.rect.height);
