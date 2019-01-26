@@ -46,4 +46,9 @@ public class EnvironmentElement : MonoBehaviour
         elementGameObject.SetActive(false);
     }
     
+    public EnvElementType GetTypee()
+    {
+        return type;
+    }
+
 }

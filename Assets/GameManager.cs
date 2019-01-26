@@ -27,6 +27,10 @@ public class GameManager : MonoBehaviour
 
 
     List<EnvironmentElement> currEnvElements;
+    private bool P1Attack = true;
+    private bool P2Attack = true;
+    private string attP1, attP2;
+
 
     // Start is called before the first frame update
     void Start()
@@ -58,12 +62,55 @@ public class GameManager : MonoBehaviour
 
         StartCoroutine(DecreaseGlobalTimer(1));
     }
-
+  
     // Update is called once per frame
     void Update()
     {
+        if (P1Attack && Input.GetKeyDown("q"))
+        {
+            attP1 = "A";
+            P1Attack = false;
+        }
+        else if (P1Attack && Input.GetKeyDown("w"))
+        {
+            attP1 = "R";
+            P1Attack = false;
+        }
+        else if (P1Attack && Input.GetKeyDown("e"))
+        {
+            attP1 = "IV";
+            P1Attack = false;
+        }
+        else if (P1Attack && Input.GetKeyDown("r"))
+        {
+            attP1 = "IM";
+            P1Attack = false;
+        }
 
+        else if (P2Attack && Input.GetKeyDown("h"))
+        {
+            attP2 = "A";
+            P2Attack = false;
+        }
 
+        else if (P2Attack && Input.GetKeyDown("j"))
+        {
+            attP2 = "R";
+            P2Attack = false;
+        }
+        else if (P2Attack && Input.GetKeyDown("k"))
+        {
+            attP2 = "IV";
+            P2Attack = false;
+        }
+        else if (P2Attack && Input.GetKeyDown("l"))
+        {
+            attP2 = "IM";
+            P2Attack = false;
+        }
+
+        if(!P1Attack && !P2Attack)
+            envChangeRespect(attP1, attP2);
     }
 
     IEnumerator DecreaseGlobalTimer(float delay)
@@ -78,7 +125,199 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    IEnumerator SpawnEnvElements(float delay)
+    private void changeRespect()
+    {
+        if(attP1 == "A" && attP2 == "R")
+        {
+            //attP2 leva dano
+            players[1].reputation -= 5;
+        }
+        else if(attP1 == "R" && attP2 == "A")
+        {
+            //attP1 leva dano 
+            players[0].reputation -= 5;
+        }
+        else if (attP1 == "R" && attP2 == "IV")
+        {
+            //att2 leva dano
+            if(currEnvElements[0].GetTypee() == EnvElementType.Car) { }
+            else
+            {
+                players[1].reputation -= 5;
+            }
+        }
+        else if (attP1 == "IV" && attP2 == "R")
+        {
+            //att1 leva dano
+            if (currEnvElements[0].GetTypee() == EnvElementType.Car) { }
+            else
+            {
+                players[0].reputation -= 5;
+            }
+        }
+        else if (attP1 == "IV" && attP2 == "IM")
+        {
+            //att2 leva dano
+            if (currEnvElements[0].GetTypee() == EnvElementType.Car) { }
+            else
+            {
+                players[1].reputation -= 5;
+            }
+        }
+        else if (attP1 == "IM" && attP2 == "IV")
+        {
+            //att1 leva dano
+            if (currEnvElements[0].GetTypee() == EnvElementType.Car) { }
+            else
+            {
+                players[0].reputation -= 5;
+            }
+        }
+        else if (attP1 == "IM" && attP2 == "A")
+        {
+            //att2 leva dano
+            players[1].reputation -= 5;
+        }
+        else if (attP1 == "A" && attP2 == "IM")
+        {
+            //att1 leva dano
+            players[0].reputation -= 5;
+        }
+        else
+        {
+            // levam os dois dano
+            if (currEnvElements[0].GetTypee() == EnvElementType.Car && (attP1 == "R" && attP2 == "R") || (attP1 == "IV" && attP2 == "IV")) { }
+            else
+            {
+                players[0].reputation -= 5;
+                players[1].reputation -= 5;
+            }
+        }
+        P1Attack = true;
+        P2Attack = true;
+    }
+
+    private void envChangeRespect(string p1, string p2)
+    {
+        if(currEnvElements[0].GetTypee() == EnvElementType.Car)
+        {
+            if(p1 == "A")
+            {
+                //probabilidade
+            }
+            else if(p1 == "R")
+            {
+                //anula
+            }
+            else if (p1 == "IV")
+            {
+                //anula
+            }
+            else if( p1 == "IM")
+            {
+                //anula
+            }
+            else if (p2 == "A")
+            {
+                //probabilidade
+            }
+            else if (p2 == "R")
+            {
+                //anula
+            }
+            else if (p2 == "IV")
+            {
+                //anula
+            }
+            else if (p2 == "IM")
+            {
+                //anula
+            }
+
+            changeRespect();
+        }
+        else if(currEnvElements[0].GetTypee() == EnvElementType.Girl)
+        {
+             if(p1 == "A")
+            {
+                //probabilidade
+            }
+            else if(p1 == "R")
+            {
+                players[0].reputation += 5;
+                players[1].reputation -= 5;
+            }
+            else if (p1 == "IV")
+            {
+                players[0].reputation -= 5;
+            }
+            else if(p1 == "IM")
+            {
+                players[0].reputation -= 5;
+            }
+            else if (p2 == "A")
+            {
+                //probabilidade
+            }
+            else if (p2 == "R")
+            {
+                players[1].reputation += 5;
+                players[0].reputation -= 5;
+            }
+            else if (p2 == "IV")
+            {
+                players[1].reputation -= 5;
+            }
+            else if (p2 == "IM")
+            {
+                players[1].reputation -= 5;
+            }
+            changeRespect();
+
+        }
+        else
+        {
+            if (p1 == "A")
+            {
+                //probabilidade
+            }
+            else if (p1 == "R")
+            {
+                players[0].reputation -= 5;
+            }
+            else if (p1 == "IV")
+            {
+                players[0].reputation += 5;
+                players[1].reputation -= 5;
+            }
+            else if (p1 == "IM")
+            {
+                players[0].reputation += 5;
+                players[1].reputation -= 5;
+            }
+            else if (p2 == "A")
+            {
+                //probabilidade
+            }
+            else if (p2 == "R")
+            {
+                players[1].reputation -= 5;
+            }
+            else if (p2 == "IV")
+            {
+                players[1].reputation += 5;
+                players[0].reputation -= 5;
+            }
+            else if (p2 == "IM")
+            {
+                players[1].reputation += 5;
+                players[0].reputation -= 5;
+            }
+            changeRespect();
+        }
+    }
+
+    IEnumerator SpawnEnvElements(double delay)
     {
         while (true)
         {
