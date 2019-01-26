@@ -83,7 +83,7 @@ public class GameManager : MonoBehaviour
     {
         Player player1 = players[0];
         Player player2 = players[1];
-
+        /*
         if (P1Attack && Input.GetKeyDown("q"))//
         {
             attP1 = "A";
@@ -128,7 +128,7 @@ public class GameManager : MonoBehaviour
 
         if(!P1Attack && !P2Attack)
             envChangeRespect(attP1, attP2);
-
+        */
 
         
         if (Input.GetKeyDown(KeyCode.A))
@@ -153,7 +153,7 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.D))
         {
             player1.PerformNoiseAttack(player2, currEnvElements[0].GetType());
-            attP1 = "R";
+           // attP1 = "R";
         }
 
 

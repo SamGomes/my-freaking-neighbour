@@ -83,7 +83,9 @@ public class Player
     }
 
 
-    IEnumerator FinishAttack(GameObject attackSprite, int damage, Player target)
+   
+
+    IEnumerator FinishAttack(GameObject attackSprite, int damage, Player target, AttackType type)
     {
         //if (!isAttacking)
         {
@@ -91,6 +93,38 @@ public class Player
             Animator animator = attackSprite.GetComponent<Animator>();
             while (!animator.GetCurrentAnimatorStateInfo(0).IsName("end"))
             {
+                /*
+                yield return new WaitForSeconds(1);
+                
+                if (target.isAttacking && target.attackActivo == AttackType.Noise && type == AttackType.Verbal)
+                {
+                    attackSprite.SetActive(false);
+                    target.removeReputation(0);
+                    isAttacking = false;
+                }
+
+                if (target.isAttacking && target.attackActivo == AttackType.Verbal && type == AttackType.Bird)
+                {
+                    attackSprite.SetActive(false);
+                    target.removeReputation(0);
+                    isAttacking = false;
+                }
+
+
+                if (target.isAttacking && target.attackActivo == AttackType.Bird && type == AttackType.Aerial)
+                {
+                    attackSprite.SetActive(false);
+                    target.removeReputation(0);
+                    isAttacking = false;
+                }
+
+                if (target.isAttacking && target.attackActivo == AttackType.Aerial && type == AttackType.Noise)
+                {
+                    attackSprite.SetActive(false);
+                    target.removeReputation(0);
+                    isAttacking = false;
+                }
+                */
                 yield return null;
             }
 
@@ -122,6 +156,16 @@ public class Player
         this.isAttacking = false;
     }
 
+
+    IEnumerator AnularTimer(float delay)
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(delay);
+
+        }
+    }
+
     //attack methods
     public void PerformAerialAttack(Player target, EnvElementType type)
     {
@@ -134,7 +178,6 @@ public class Player
 
             if (success)
             {
-
                 if (target.isAttacking && target.attackActivo == AttackType.Noise)
                 {
                     target.anular();
@@ -142,15 +185,13 @@ public class Player
 
                 {
                     this.aerialAttackSprite.SetActive(true);
-                    gameManager.StartCoroutine(FinishAttack(aerialAttackSprite, 10, target));
+                    gameManager.StartCoroutine(FinishAttack(aerialAttackSprite, 10, target, attackActivo));
                 }
-
-
             }
             else
             {
                 this.aerialAttackFailSprite.SetActive(true);
-                gameManager.StartCoroutine(FinishAttack(aerialAttackFailSprite, 0, target));
+                gameManager.StartCoroutine(FinishAttack(aerialAttackFailSprite, 0, target, attackActivo));
             }            
         }        
         
@@ -175,7 +216,7 @@ public class Player
                 {
                     isAttacking = true;
                     this.verbalAttackSprite.SetActive(true);
-                    gameManager.StartCoroutine(FinishAttack(verbalAttackSprite, 10, target));
+                    gameManager.StartCoroutine(FinishAttack(verbalAttackSprite, 10, target, attackActivo));
                 }
             }
         }      
@@ -187,7 +228,7 @@ public class Player
         {
             this.attackActivo = AttackType.Bird;
 
-            if (target.isAttacking && target.attackActivo == AttackType.Verbal)
+           if (target.isAttacking && target.attackActivo == AttackType.Verbal)
             {
 
             }
@@ -201,7 +242,7 @@ public class Player
                 {
                     isAttacking = true;
                     this.birdAttackSprite.SetActive(true);
-                    gameManager.StartCoroutine(FinishAttack(birdAttackSprite, 10, target));
+                    gameManager.StartCoroutine(FinishAttack(birdAttackSprite, 10, target, attackActivo));
                 }
             }                        
         }               
@@ -226,7 +267,7 @@ public class Player
                 
                 isAttacking = true;
                 this.noiseAttackSprite.SetActive(true);
-                gameManager.StartCoroutine(FinishAttack(noiseAttackSprite, 10, target));
+                gameManager.StartCoroutine(FinishAttack(noiseAttackSprite, 10, target, attackActivo));
                 
             }
         }      
