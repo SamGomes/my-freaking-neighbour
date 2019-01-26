@@ -26,6 +26,13 @@ public class Player : MonoBehaviour
     {
 
     }
+    
+    public void removeReputation(int remove)
+    {
+        this.reputation -= remove;
+        if ( this.reputation < 0 ) { this.reputation = 0; }
+        ChangeBarLife(this.reputation);
+    }
 
     public void ChangeBarLife(float life)
     {

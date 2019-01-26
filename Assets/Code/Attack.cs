@@ -2,13 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum AttackType
-{
-    Aerial,
-    Verbal,
-    Bird, //Manguito
-    Noise
-}
+
 
 public class Attack : MonoBehaviour
 {    

@@ -44,7 +44,12 @@ public class GameManager : MonoBehaviour
         players.Add(new Player(UILifeBarObjectP1, maxLifeBarSize));
         players.Add(new Player(UILifeBarObjectP2, maxLifeBarSize));
 
+        GameObject gos = GameObject.FindGameObjectsWithTag("AttackManager")[0];
+        AttackManager am =  gos.GetComponent<AttackManager>();
 
+        am.playerLeft  = players[0];
+        am.playerRight = players[1];
+        
         currEnvElements = new List<EnvironmentElement>();
         possibleEnvElements = new List<EnvironmentElement>();
         Vector3 initialPos = new Vector3(-1.16f, 2.05f, -0.58f);
