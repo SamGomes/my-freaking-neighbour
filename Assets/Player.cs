@@ -117,21 +117,19 @@ public class Player
 
     IEnumerator FinishAttack(GameObject attackSprite, int damage, Player target)
     {
-        //if (!isAttacking)
+       
+        //myGameObject.SetActive(false);
+        Animator animator = attackSprite.GetComponent<Animator>();
+        while (!animator.GetCurrentAnimatorStateInfo(0).IsName("end"))
         {
-            //isAttacking = true;
-            myGameObject.SetActive(false);
-            Animator animator = attackSprite.GetComponent<Animator>();
-            while (!animator.GetCurrentAnimatorStateInfo(0).IsName("end"))
-            {
-                yield return null;
-            }
-            attackSprite.SetActive(false);
-            myGameObject.SetActive(true);
-            target.RemoveReputation(damage);
-
-            this.currAttackType = AttackType.None;
+            yield return null;
         }
+        attackSprite.SetActive(false);
+        myGameObject.SetActive(true);
+        target.RemoveReputation(damage);
+
+        this.currAttackType = AttackType.None;
+        
     }
     
 
