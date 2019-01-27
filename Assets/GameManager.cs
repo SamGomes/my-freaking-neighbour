@@ -17,10 +17,10 @@ public class GameManager : MonoBehaviour
     public GameObject player1Sprite;
     public GameObject player2Sprite;
 
-    public GameObject spriteAerialLeft;
-    public GameObject spriteAerialRight;
-    public GameObject spriteAerialFailLeft;
-    public GameObject spriteAerialFailRight;
+    public List<GameObject> spriteAerialLeft;
+    public List<GameObject> spriteAerialRight;
+    public List<GameObject> spriteAerialFailLeft;
+    public List<GameObject> spriteAerialFailRight;
     public GameObject spriteVerbalRight;
     public GameObject spriteVerbalLeft;
 
@@ -64,8 +64,8 @@ public class GameManager : MonoBehaviour
         float maxLifeBarSize = 88.0f;
 
 
-        Global._players.Add(new Player(this, player1Sprite, UILifeBarObjectP1, maxLifeBarSize, spriteAerialLeft, spriteAerialFailLeft, spriteVerbalLeft, spriteBirdLeft, spriteNoiseLeft, 80));
-        Global._players.Add(new Player(this, player2Sprite, UILifeBarObjectP2, maxLifeBarSize, spriteAerialRight, spriteAerialFailRight, spriteVerbalRight, spriteBirdRight, spriteNoiseRight, 80));
+        Global._players.Add(new Player(this, player1Sprite, UILifeBarObjectP1, maxLifeBarSize, spriteAerialLeft, spriteAerialFailLeft, spriteVerbalLeft, spriteBirdLeft, spriteNoiseLeft, 60));
+        Global._players.Add(new Player(this, player2Sprite, UILifeBarObjectP2, maxLifeBarSize, spriteAerialRight, spriteAerialFailRight, spriteVerbalRight, spriteBirdRight, spriteNoiseRight, 60));
         
         possibleEnvElements = new List<EnvironmentElement>();
         Vector3 initialPos = new Vector3(-1.16f, 2.05f, -0.58f);

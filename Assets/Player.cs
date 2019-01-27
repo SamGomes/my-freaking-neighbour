@@ -35,8 +35,8 @@ public class Player
     GameObject myGameObject;
 
     //attack sprites
-    GameObject aerialAttackSprite;
-    GameObject aerialAttackFailSprite;
+    List<GameObject> aerialAttackSprites;
+    List<GameObject> aerialAttackFailSprites;
     GameObject verbalAttackSprite;
     GameObject birdAttackSprite; 
     GameObject noiseAttackSprite;
@@ -49,14 +49,14 @@ public class Player
     public AudioClip som;
     public AudioSource audioSource;
 
-    public Player (GameManager gameManager, GameObject myGameObject, GameObject UILifeBarObject, float maxLifeBarSize, 
-        GameObject aerialAttackSprite, GameObject aerialAttackFailSprite, GameObject verbalAttackSprite, GameObject birdAttackSprite, GameObject noiseAttackSprite,
+    public Player (GameManager gameManager, GameObject myGameObject, GameObject UILifeBarObject, float maxLifeBarSize,
+        List<GameObject> aerialAttackSprites, List<GameObject> aerialAttackFailSprites, GameObject verbalAttackSprite, GameObject birdAttackSprite, GameObject noiseAttackSprite,
         int successAttackProbability)
     {
         this.currAttackType = AttackType.None;
 
-        this.aerialAttackSprite = aerialAttackSprite;
-        this.aerialAttackFailSprite = aerialAttackFailSprite;
+        this.aerialAttackSprites = aerialAttackSprites;
+        this.aerialAttackFailSprites = aerialAttackFailSprites;
         this.verbalAttackSprite = verbalAttackSprite;
         this.birdAttackSprite = birdAttackSprite;
         this.noiseAttackSprite = noiseAttackSprite;
@@ -160,14 +160,16 @@ public class Player
             if (success)
             {
                 this.currAttackType = AttackType.Aerial;
-                this.aerialAttackSprite.SetActive(true);
-                gameManager.StartCoroutine(FinishAttack(aerialAttackSprite, damage, target));
+                GameObject randSprite = this.aerialAttackSprites[Random.Range(0,aerialAttackSprites.Count)];
+                randSprite.SetActive(true);
+                gameManager.StartCoroutine(FinishAttack(randSprite, damage, target));
             }
             else
             {
                 this.currAttackType = AttackType.AerialFail;
-                this.aerialAttackFailSprite.SetActive(true);
-                gameManager.StartCoroutine(FinishAttack(aerialAttackFailSprite, 0, target));
+                GameObject randSprite = this.aerialAttackFailSprites[Random.Range(0, aerialAttackFailSprites.Count)];
+                randSprite.SetActive(true);
+                gameManager.StartCoroutine(FinishAttack(randSprite, 0, target));
             }
 
         }
