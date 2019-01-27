@@ -72,14 +72,14 @@ public class Player
 
     }
     
-    public void removeReputation(int remove)
+    public void RemoveReputation(int remove)
     {
         this.reputation -= remove;
         if ( this.reputation < 0 ) { this.reputation = 0; }
         ChangeBarLife(this.reputation);
     }
 
-    public void addReputation(int add)
+    public void AddReputation(int add)
     {
         this.reputation += add;
         if(this.reputation > 100) { this.reputation = 100; }
@@ -106,14 +106,12 @@ public class Player
             }
             attackSprite.SetActive(false);
             myGameObject.SetActive(true);
-            target.removeReputation(damage);
+            target.RemoveReputation(damage);
 
             this.currAttackType = AttackType.None;
         }
     }
-
-  
-
+    
 
 
     //attack methods

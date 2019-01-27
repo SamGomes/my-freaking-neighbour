@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour
     public Text UITimer;
     private int globalTimer;
 
+    public Collider changeEnvTrigger;
+
     public GameObject UILifeBarObjectP1;
     public GameObject UILifeBarObjectP2;
 
@@ -44,7 +46,7 @@ public class GameManager : MonoBehaviour
     int maxEnvElements;
 
 
-    List<EnvironmentElement> currEnvElements;
+    EnvironmentElement activeEnvElement;
     private bool P1Attack = true;
     private bool P2Attack = true;
     private string attP1, attP2;
@@ -66,8 +68,6 @@ public class GameManager : MonoBehaviour
         players.Add(new Player(this, player1Sprite, UILifeBarObjectP1, maxLifeBarSize, spriteAerialLeft, spriteAerialFailLeft, spriteVerbalLeft, spriteBirdLeft, spriteNoiseLeft, 80));
         players.Add(new Player(this, player2Sprite, UILifeBarObjectP2, maxLifeBarSize, spriteAerialRight, spriteAerialFailRight, spriteVerbalRight, spriteBirdRight, spriteNoiseRight, 80));
         
-        
-        currEnvElements = new List<EnvironmentElement>();
         possibleEnvElements = new List<EnvironmentElement>();
         Vector3 initialPos = new Vector3(-1.16f, 2.05f, -0.58f);
         Vector3 cameraOrientation = -camera.transform.forward;
@@ -76,8 +76,10 @@ public class GameManager : MonoBehaviour
         possibleEnvElements.Add(new EnvironmentElement(EnvElementType.Girl, girlPrefab, initialPos, orientation, 20.0f));
         possibleEnvElements.Add(new EnvironmentElement(EnvElementType.Swagger, guyPrefab, initialPos, orientation, 20.0f));
 
-        StartCoroutine(SpawnEnvElements(spawnChoiceTimeInSeconds));
 
+        activeEnvElement = ChooseNewEnvElement();
+        activeEnvElement.Spawn();
+        
         StartCoroutine(DecreaseGlobalTimer(1));
     }
   
@@ -130,8 +132,6 @@ public class GameManager : MonoBehaviour
         {
             player2.PerformNoiseAttack(player1);
         }
-        
-
 
     }
 
@@ -147,32 +147,19 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    IEnumerator SpawnEnvElements(double delay)
-    {
-        while (true)
-        {
-            int possibleEnvElementsSize = currEnvElements.Count;
-            if (possibleEnvElementsSize > maxEnvElements)
-            {
-                currEnvElements[maxEnvElements].Unspawn();
-                currEnvElements.RemoveAt(maxEnvElements);
-            }
-
-            int randNumber = Random.Range(0, possibleEnvElementsSize);
-            if (randNumber < spawnProbability)
-            {
-                EnvironmentElement newEnvElement = ChooseNewEnvElement();
-                currEnvElements.Add(newEnvElement);
-                newEnvElement.Spawn();
-            }
-            yield return new WaitForSeconds(spawnChoiceTimeInSeconds);
-        }
-    }
+  
 
     EnvironmentElement ChooseNewEnvElement()
     {
         int possibleEnvElementsSize = possibleEnvElements.Count;
         int randIndex = Random.Range(0, possibleEnvElementsSize);
         return possibleEnvElements[randIndex];
+    }
+
+    void OnTriggerEnter(Collider collider)
+    {
+        activeEnvElement.Unspawn();
+        activeEnvElement = ChooseNewEnvElement();
+        activeEnvElement.Spawn();
     }
 }
