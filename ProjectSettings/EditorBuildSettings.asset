@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/FHV_UIScene.unity
     guid: 1877a3975edafeb4787be0f829b9e756
+  - enabled: 1
+    path: Assets/Scenes/End.unity
+    guid: 0ee843856dc28114781e509960e40be7
   m_configObjects: {}

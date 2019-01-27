@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
@@ -41,7 +42,7 @@ public class GameManager : MonoBehaviour
     float spawnChoiceTimeInSeconds;
     float spawnProbability;
 
-    List<Player> players;
+    public List<Player> players;
     List<EnvironmentElement> possibleEnvElements;
     int maxEnvElements;
 
@@ -143,6 +144,10 @@ public class GameManager : MonoBehaviour
             if (globalTimer > 0)
             {
                 UITimer.text = (--globalTimer).ToString();
+            }
+            else
+            {
+                SceneManager.LoadScene("FHV_UIScene");
             }
         }
     }

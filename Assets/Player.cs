@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public enum AttackType
@@ -75,7 +76,10 @@ public class Player
     public void RemoveReputation(int remove)
     {
         this.reputation -= remove;
-        if ( this.reputation < 0 ) { this.reputation = 0; }
+        if ( this.reputation < 0 ) {
+            this.reputation = 0;
+            SceneManager.LoadScene("End");
+        }
         ChangeBarLife(this.reputation);
     }
 
