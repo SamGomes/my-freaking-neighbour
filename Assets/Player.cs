@@ -48,6 +48,7 @@ public class Player
 
     public AudioClip som;
     public AudioSource audioSource;
+    EnvironmentElement currEnvElement;
 
     public Player (GameManager gameManager, GameObject myGameObject, GameObject UILifeBarObject, float maxLifeBarSize,
         List<GameObject> aerialAttackSprites, List<GameObject> aerialAttackFailSprites, GameObject verbalAttackSprite, GameObject birdAttackSprite, GameObject noiseAttackSprite,
@@ -150,19 +151,19 @@ public class Player
         if (this.currAttackType == AttackType.None)
         {
 
-            int damage = 10;
-            if (target.currAttackType == AttackType.Bird)
-            {
-                damage = 0;
-            }
-
             bool success = IsSuccess();
             if (success)
             {
                 this.currAttackType = AttackType.Aerial;
                 GameObject randSprite = this.aerialAttackSprites[Random.Range(0,aerialAttackSprites.Count)];
                 randSprite.SetActive(true);
-                gameManager.StartCoroutine(FinishAttack(randSprite, damage, target));
+             
+                if(target.currAttackType == AttackType.Bird)
+                {
+                    gameManager.StartCoroutine(FinishAttack(randSprite, 0, target));
+                }
+                else
+                    gameManager.StartCoroutine(FinishAttack(randSprite, 10, target));
             }
             else
             {
@@ -170,6 +171,11 @@ public class Player
                 GameObject randSprite = this.aerialAttackFailSprites[Random.Range(0, aerialAttackFailSprites.Count)];
                 randSprite.SetActive(true);
                 gameManager.StartCoroutine(FinishAttack(randSprite, 0, target));
+
+                if (currEnvElement.GetType() == EnvElementType.Car || currEnvElement.GetType() == EnvElementType.Girl || currEnvElement.GetType() == EnvElementType.Swagger)
+                {
+                    this.RemoveReputation(10);
+                }
             }
 
         }
@@ -186,9 +192,18 @@ public class Player
         if (this.currAttackType == AttackType.None)
         {
             int damage = 10;
-            if (target.currAttackType == AttackType.Noise)
+            if (currEnvElement.GetType() == EnvElementType.Car || target.currAttackType == AttackType.Noise)
             {
                 damage = 0;
+            }
+            else if (currEnvElement.GetType() == EnvElementType.Girl)
+            {
+                this.RemoveReputation(10);
+            }
+            else if(currEnvElement.GetType() == EnvElementType.Swagger)
+            {
+                this.AddReputation(10);
+                damage = 10;
             }
 
             this.currAttackType = AttackType.Verbal;
@@ -209,9 +224,19 @@ public class Player
         if (this.currAttackType == AttackType.None)
         {
             int damage = 10;
-            if (target.currAttackType == AttackType.Noise)
+            
+            if (currEnvElement.GetType() == EnvElementType.Car || target.currAttackType == AttackType.Noise)
             {
                 damage = 0;
+            }
+            else if(currEnvElement.GetType() == EnvElementType.Girl)
+            {
+                this.RemoveReputation(10);
+            }
+            else if(currEnvElement.GetType() == EnvElementType.Swagger)
+            {
+                this.AddReputation(10);
+                damage = 10;
             }
 
 
@@ -232,8 +257,19 @@ public class Player
         if (this.currAttackType == AttackType.None)
         {
             int damage = 10;
-            if (target.currAttackType == AttackType.Aerial)
+
+            if (target.currAttackType == AttackType.Aerial || currEnvElement.GetType() == EnvElementType.Car)
             {
+                damage = 0;
+            }
+            else if(currEnvElement.GetType() == EnvElementType.Girl)
+            {
+                this.AddReputation(10);
+                damage = 10;
+            }
+            else if(currEnvElement.GetType() == EnvElementType.Swagger)
+            {
+                this.RemoveReputation(10);
                 damage = 0;
             }
 
@@ -253,6 +289,6 @@ public class Player
 
     public void updateActiveElemElementPlayer(EnvironmentElement elem)
     {
-
+        currEnvElement = elem;
     }
 }
