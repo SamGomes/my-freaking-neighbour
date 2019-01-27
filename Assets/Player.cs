@@ -22,7 +22,7 @@ public class Player
 
     AttackType currAttackType;
 
-    GameManager gameManager;
+    GameManager gameManagerRef;
 
     public int reputation;
     private bool canAttack;
@@ -49,7 +49,7 @@ public class Player
     public AudioClip som;
     public AudioSource audioSource;
 
-    public Player (GameManager gameManager, GameObject myGameObject, GameObject UILifeBarObject, float maxLifeBarSize,
+    public Player (GameManager gameManagerRef, GameObject myGameObject, GameObject UILifeBarObject, float maxLifeBarSize,
         List<GameObject> aerialAttackSprites, List<GameObject> aerialAttackFailSprites, GameObject verbalAttackSprite, GameObject birdAttackSprite, GameObject noiseAttackSprite,
         int successAttackProbability)
     {
@@ -72,7 +72,7 @@ public class Player
         this.successAttackProbability = successAttackProbability;
       
 
-        this.gameManager = gameManager;
+        this.gameManagerRef = gameManagerRef;
 
         this.myGameObject = myGameObject;
 
@@ -90,9 +90,9 @@ public class Player
     {
         GameObject sound = GameObject.FindGameObjectWithTag("Audio");
         AudioSource aux2 = sound.GetComponent<AudioSource>();
-
         var aux = Resources.Load("Damage1") as AudioClip;
         aux2.PlayOneShot(aux);
+            
         this.reputation -= remove;
         if ( this.reputation < 0 ) {
             this.reputation = 0;
@@ -117,7 +117,7 @@ public class Player
 
     IEnumerator FinishAttack(GameObject attackSprite, int damage, Player target)
     {
-       
+        //isAttacking = true;
         //myGameObject.SetActive(false);
         Animator animator = attackSprite.GetComponent<Animator>();
         while (!animator.GetCurrentAnimatorStateInfo(0).IsName("end"))
@@ -128,8 +128,15 @@ public class Player
         myGameObject.SetActive(true);
         target.RemoveReputation(damage);
 
+        if (currAttackType == AttackType.Aerial || currAttackType == AttackType.AerialFail)
+        {
+            GameObject sound1 = GameObject.FindGameObjectWithTag("Audio");
+            AudioSource aux1 = sound1.GetComponent<AudioSource>();
+            var aux3 = Resources.Load("Bottle") as AudioClip;
+            aux1.PlayOneShot(aux3);
+        }
+
         this.currAttackType = AttackType.None;
-        
     }
     
 
@@ -137,15 +144,8 @@ public class Player
     //attack methods
     public void PerformAerialAttack(Player target)
     {
-
         if (this.currAttackType == AttackType.None)
         {
-
-            int damage = 10;
-            if (target.currAttackType == AttackType.Bird)
-            {
-                damage = 0;
-            }
 
             bool success = IsSuccess();
             if (success)
@@ -153,16 +153,28 @@ public class Player
                 this.currAttackType = AttackType.Aerial;
                 GameObject randSprite = this.aerialAttackSprites[Random.Range(0,aerialAttackSprites.Count)];
                 randSprite.SetActive(true);
-                gameManager.StartCoroutine(FinishAttack(randSprite, damage, target));
+             
+                if(target.currAttackType == AttackType.Bird)
+                {
+                    gameManagerRef.StartCoroutine(FinishAttack(randSprite, 0, target));
+                }
+                else
+                    gameManagerRef.StartCoroutine(FinishAttack(randSprite, 10, target));
             }
             else
             {
+                EnvironmentElement currEnvElement = gameManagerRef.getActiveEnvElement();
                 this.currAttackType = AttackType.AerialFail;
                 GameObject randSprite = this.aerialAttackFailSprites[Random.Range(0, aerialAttackFailSprites.Count)];
                 randSprite.SetActive(true);
-                gameManager.StartCoroutine(FinishAttack(randSprite, 0, target));
+                gameManagerRef.StartCoroutine(FinishAttack(randSprite, 0, target));
+
+                if (currEnvElement.GetType() == EnvElementType.Car || currEnvElement.GetType() == EnvElementType.Girl || currEnvElement.GetType() == EnvElementType.Swagger)
+                {
+                    this.RemoveReputation(10);
+                }
             }
-            
+
         }
          
         
@@ -171,15 +183,30 @@ public class Player
     {
         if (this.currAttackType == AttackType.None)
         {
+            EnvironmentElement currEnvElement = gameManagerRef.getActiveEnvElement();
+            GameObject sound = GameObject.FindGameObjectWithTag("Audio");
+            AudioSource aux1 = sound.GetComponent<AudioSource>();
+            var aux = Resources.Load("Verbal Insult") as AudioClip;
+            aux1.PlayOneShot(aux);
+        
             int damage = 10;
-            if (target.currAttackType == AttackType.Noise)
+            if (currEnvElement.GetType() == EnvElementType.Car || target.currAttackType == AttackType.Noise)
             {
                 damage = 0;
+            }
+            else if (currEnvElement.GetType() == EnvElementType.Girl)
+            {
+                this.RemoveReputation(10);
+            }
+            else if(currEnvElement.GetType() == EnvElementType.Swagger)
+            {
+                this.AddReputation(10);
+                damage = 10;
             }
 
             this.currAttackType = AttackType.Verbal;
             this.verbalAttackSprite.SetActive(true);
-            gameManager.StartCoroutine(FinishAttack(verbalAttackSprite, damage, target));
+            gameManagerRef.StartCoroutine(FinishAttack(verbalAttackSprite, damage, target));
         }
 
        
@@ -187,38 +214,73 @@ public class Player
     }
     public void PerformBirdAttack(Player target)
     {
+       
 
         if (this.currAttackType == AttackType.None)
         {
+            EnvironmentElement currEnvElement = gameManagerRef.getActiveEnvElement();
+            GameObject sound = GameObject.FindGameObjectWithTag("Audio");
+            AudioSource aux1 = sound.GetComponent<AudioSource>();
+            var aux = Resources.Load("Bird Insult") as AudioClip;
+            aux1.PlayOneShot(aux);
+
             int damage = 10;
-            if (target.currAttackType == AttackType.Noise)
+            
+            if (currEnvElement.GetType() == EnvElementType.Car || target.currAttackType == AttackType.Noise)
             {
                 damage = 0;
+            }
+            else if(currEnvElement.GetType() == EnvElementType.Girl)
+            {
+                this.RemoveReputation(10);
+            }
+            else if(currEnvElement.GetType() == EnvElementType.Swagger)
+            {
+                this.AddReputation(10);
+                damage = 10;
             }
 
 
             this.currAttackType = AttackType.Bird;
             this.birdAttackSprite.SetActive(true);
-            gameManager.StartCoroutine(FinishAttack(birdAttackSprite, damage, target));
+            gameManagerRef.StartCoroutine(FinishAttack(birdAttackSprite, damage, target));
         }            
 
      
     }
     public void PerformNoiseAttack(Player target)
     {
+       
 
         if (this.currAttackType == AttackType.None)
         {
+            EnvironmentElement currEnvElement = gameManagerRef.getActiveEnvElement();
+            GameObject sound = GameObject.FindGameObjectWithTag("Audio");
+            AudioSource aux1 = sound.GetComponent<AudioSource>();
+            var aux = Resources.Load("Loud Noise") as AudioClip;
+            aux1.PlayOneShot(aux);
+
             int damage = 10;
-            if (target.currAttackType == AttackType.Aerial)
+
+            if (target.currAttackType == AttackType.Aerial || currEnvElement.GetType() == EnvElementType.Car)
             {
+                damage = 0;
+            }
+            else if(currEnvElement.GetType() == EnvElementType.Girl)
+            {
+                this.AddReputation(10);
+                damage = 10;
+            }
+            else if(currEnvElement.GetType() == EnvElementType.Swagger)
+            {
+                this.RemoveReputation(10);
                 damage = 0;
             }
 
             this.currAttackType = AttackType.Noise;
             isAttacking = true;
             this.noiseAttackSprite.SetActive(true);
-            gameManager.StartCoroutine(FinishAttack(noiseAttackSprite, damage, target));
+            gameManagerRef.StartCoroutine(FinishAttack(noiseAttackSprite, damage, target));
         }
       
     }
