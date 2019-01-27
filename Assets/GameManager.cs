@@ -42,7 +42,6 @@ public class GameManager : MonoBehaviour
     float spawnChoiceTimeInSeconds;
     float spawnProbability;
 
-    public List<Player> players;
     List<EnvironmentElement> possibleEnvElements;
     int maxEnvElements;
 
@@ -51,7 +50,6 @@ public class GameManager : MonoBehaviour
     private bool P1Attack = true;
     private bool P2Attack = true;
     private string attP1, attP2;
-
 
     // Start is called before the first frame update
     void Start()
@@ -65,9 +63,9 @@ public class GameManager : MonoBehaviour
 
         float maxLifeBarSize = 88.0f;
 
-        players = new List<Player>();
-        players.Add(new Player(this, player1Sprite, UILifeBarObjectP1, maxLifeBarSize, spriteAerialLeft, spriteAerialFailLeft, spriteVerbalLeft, spriteBirdLeft, spriteNoiseLeft, 80));
-        players.Add(new Player(this, player2Sprite, UILifeBarObjectP2, maxLifeBarSize, spriteAerialRight, spriteAerialFailRight, spriteVerbalRight, spriteBirdRight, spriteNoiseRight, 80));
+
+        Global._players.Add(new Player(this, player1Sprite, UILifeBarObjectP1, maxLifeBarSize, spriteAerialLeft, spriteAerialFailLeft, spriteVerbalLeft, spriteBirdLeft, spriteNoiseLeft, 80));
+        Global._players.Add(new Player(this, player2Sprite, UILifeBarObjectP2, maxLifeBarSize, spriteAerialRight, spriteAerialFailRight, spriteVerbalRight, spriteBirdRight, spriteNoiseRight, 80));
         
         possibleEnvElements = new List<EnvironmentElement>();
         Vector3 initialPos = new Vector3(-1.16f, 2.05f, -0.58f);
@@ -87,8 +85,8 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Player player1 = players[0];
-        Player player2 = players[1];
+        Player player1 = Global._players[0];
+        Player player2 = Global._players[1];
         
 
         if (Input.GetKeyDown(KeyCode.A))

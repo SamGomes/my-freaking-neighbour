@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - AttackManager
+  - P1
+  - P2
+  - Audio
   layers:
   - Default
   - TransparentFX

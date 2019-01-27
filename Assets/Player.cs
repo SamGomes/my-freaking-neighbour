@@ -15,6 +15,8 @@ public enum AttackType
 }
 
 
+
+
 public class Player
 {
 
@@ -44,6 +46,9 @@ public class Player
 
     bool isAttacking;
 
+    public AudioClip som;
+    public AudioSource audioSource;
+
     public Player (GameManager gameManager, GameObject myGameObject, GameObject UILifeBarObject, float maxLifeBarSize, 
         GameObject aerialAttackSprite, GameObject aerialAttackFailSprite, GameObject verbalAttackSprite, GameObject birdAttackSprite, GameObject noiseAttackSprite,
         int successAttackProbability)
@@ -71,10 +76,23 @@ public class Player
 
         this.myGameObject = myGameObject;
 
+
+
     }
-    
+
+    void Start()
+    {
+        //audioSource = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioSource>();
+        
+    }
+
     public void RemoveReputation(int remove)
     {
+        GameObject sound = GameObject.FindGameObjectWithTag("Audio");
+        AudioSource aux2 = sound.GetComponent<AudioSource>();
+
+        var aux = Resources.Load("Damage1") as AudioClip;
+        aux2.PlayOneShot(aux);
         this.reputation -= remove;
         if ( this.reputation < 0 ) {
             this.reputation = 0;
