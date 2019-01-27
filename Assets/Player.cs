@@ -3,8 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum AttackType
+{
+    Aerial,
+    AerialFail,
+    Verbal,
+    Bird, //Manguito
+    Noise,
+    None
+}
+
+
 public class Player
 {
+
+    AttackType currAttackType;
+
     GameManager gameManager;
 
     public int reputation;
@@ -33,6 +47,7 @@ public class Player
         GameObject aerialAttackSprite, GameObject aerialAttackFailSprite, GameObject verbalAttackSprite, GameObject birdAttackSprite, GameObject noiseAttackSprite,
         int successAttackProbability)
     {
+        this.currAttackType = AttackType.None;
 
         this.aerialAttackSprite = aerialAttackSprite;
         this.aerialAttackFailSprite = aerialAttackFailSprite;
@@ -49,13 +64,11 @@ public class Player
 
         this.successfulLastAttack = false;
         this.successAttackProbability = successAttackProbability;
-
-        this.isAttacking = false;
+      
 
         this.gameManager = gameManager;
 
         this.myGameObject = myGameObject;
-
 
     }
     
@@ -94,25 +107,38 @@ public class Player
             attackSprite.SetActive(false);
             myGameObject.SetActive(true);
             target.removeReputation(damage);
-            isAttacking = false;
+
+            this.currAttackType = AttackType.None;
         }
     }
+
+  
+
+
 
     //attack methods
     public void PerformAerialAttack(Player target)
     {
-        bool success = IsSuccess();
 
-        if (!isAttacking)
+        if (this.currAttackType == AttackType.None)
         {
-            isAttacking = true;
+
+            int damage = 10;
+            if (target.currAttackType == AttackType.Bird)
+            {
+                damage = 0;
+            }
+
+            bool success = IsSuccess();
             if (success)
             {
+                this.currAttackType = AttackType.Aerial;
                 this.aerialAttackSprite.SetActive(true);
-                gameManager.StartCoroutine(FinishAttack(aerialAttackSprite, 10, target));
+                gameManager.StartCoroutine(FinishAttack(aerialAttackSprite, damage, target));
             }
             else
             {
+                this.currAttackType = AttackType.AerialFail;
                 this.aerialAttackFailSprite.SetActive(true);
                 gameManager.StartCoroutine(FinishAttack(aerialAttackFailSprite, 0, target));
             }
@@ -123,11 +149,17 @@ public class Player
     }
     public void PerformVerbalAttack(Player target)
     {
-        if (!isAttacking)
+        if (this.currAttackType == AttackType.None)
         {
-            isAttacking = true;
+            int damage = 10;
+            if (target.currAttackType == AttackType.Noise)
+            {
+                damage = 0;
+            }
+
+            this.currAttackType = AttackType.Verbal;
             this.verbalAttackSprite.SetActive(true);
-            gameManager.StartCoroutine(FinishAttack(verbalAttackSprite, 10, target));
+            gameManager.StartCoroutine(FinishAttack(verbalAttackSprite, damage, target));
         }
 
        
@@ -136,11 +168,18 @@ public class Player
     public void PerformBirdAttack(Player target)
     {
 
-        if (!isAttacking)
+        if (this.currAttackType == AttackType.None)
         {
-            isAttacking = true;
+            int damage = 10;
+            if (target.currAttackType == AttackType.Noise)
+            {
+                damage = 0;
+            }
+
+
+            this.currAttackType = AttackType.Bird;
             this.birdAttackSprite.SetActive(true);
-            gameManager.StartCoroutine(FinishAttack(birdAttackSprite, 10, target));
+            gameManager.StartCoroutine(FinishAttack(birdAttackSprite, damage, target));
         }            
 
      
@@ -148,11 +187,18 @@ public class Player
     public void PerformNoiseAttack(Player target)
     {
 
-        if (!isAttacking)
+        if (this.currAttackType == AttackType.None)
         {
+            int damage = 10;
+            if (target.currAttackType == AttackType.Aerial)
+            {
+                damage = 0;
+            }
+
+            this.currAttackType = AttackType.Noise;
             isAttacking = true;
             this.noiseAttackSprite.SetActive(true);
-            gameManager.StartCoroutine(FinishAttack(noiseAttackSprite, 10, target));
+            gameManager.StartCoroutine(FinishAttack(noiseAttackSprite, damage, target));
         }
       
     }
