@@ -92,14 +92,6 @@ public class Player
         AudioSource aux2 = sound.GetComponent<AudioSource>();
         var aux = Resources.Load("Damage1") as AudioClip;
         aux2.PlayOneShot(aux);
-
-        if(currAttackType == AttackType.Aerial)
-        {
-            GameObject sound1 = GameObject.FindGameObjectWithTag("Audio");
-            AudioSource aux1 = sound1.GetComponent<AudioSource>();
-            var aux3 = Resources.Load("Bottle") as AudioClip;
-            aux1.PlayOneShot(aux3);
-        }
             
         this.reputation -= remove;
         if ( this.reputation < 0 ) {
@@ -138,6 +130,14 @@ public class Player
             myGameObject.SetActive(true);
             target.RemoveReputation(damage);
 
+            if (currAttackType == AttackType.Aerial || currAttackType == AttackType.AerialFail)
+            {
+                GameObject sound1 = GameObject.FindGameObjectWithTag("Audio");
+                AudioSource aux1 = sound1.GetComponent<AudioSource>();
+                var aux3 = Resources.Load("Bottle") as AudioClip;
+                aux1.PlayOneShot(aux3);
+            }
+
             this.currAttackType = AttackType.None;
         }
     }
@@ -147,7 +147,6 @@ public class Player
     //attack methods
     public void PerformAerialAttack(Player target)
     {
-
         if (this.currAttackType == AttackType.None)
         {
 
@@ -248,5 +247,10 @@ public class Player
     {
         int randNumber = Random.Range(0, 100);
         return (randNumber < successAttackProbability);
+    }
+
+    public void updateActiveElemElementPlayer(EnvironmentElement elem)
+    {
+
     }
 }

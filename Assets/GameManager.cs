@@ -163,6 +163,8 @@ public class GameManager : MonoBehaviour
     {
         activeEnvElement.Unspawn();
         activeEnvElement = ChooseNewEnvElement();
+        Global._players[0].updateActiveElemElementPlayer(activeEnvElement);
+        Global._players[1].updateActiveElemElementPlayer(activeEnvElement);
         activeEnvElement.Spawn();
     }
 }
