@@ -1,28 +1,24 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
 
 public class GameStart : MonoBehaviour
 {
-    // Start is called before the first frame update
+
+    public Button yourButton;
+
     void Start()
     {
-        GameObject[] all_objs = GameObject.FindObjectsOfType<GameObject>();
-        GameObject current = Selection.activeGameObject;
-
-
-        foreach(GameObject g in all_objs)
-        {
-            if (g != current)
-                g.SetActive(false);
-        }
+        var btn = transform.GetComponentInChildren<Button>();
+        btn.onClick.AddListener(TaskOnClick);
     }
 
-
-    // Update is called once per frame
-    void Update()
+    void TaskOnClick()
     {
-        
+        SceneManager.LoadScene("FHV_UIScene");
     }
+
 }
