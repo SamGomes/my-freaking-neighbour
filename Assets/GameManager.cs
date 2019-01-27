@@ -71,9 +71,9 @@ public class GameManager : MonoBehaviour
         Vector3 initialPos = new Vector3(-1.16f, 2.05f, -0.58f);
         Vector3 cameraOrientation = -camera.transform.forward;
         Vector3 orientation = new Vector3(cameraOrientation.x, 0, cameraOrientation.z);
-        possibleEnvElements.Add(new EnvironmentElement(EnvElementType.Car, carPrefab, new Vector3(-1.16f, 1.45f, -0.58f), orientation, 40.0f));
-        possibleEnvElements.Add(new EnvironmentElement(EnvElementType.Girl, girlPrefab, initialPos, orientation, 20.0f));
-        possibleEnvElements.Add(new EnvironmentElement(EnvElementType.Swagger, guyPrefab, initialPos, orientation, 20.0f));
+        possibleEnvElements.Add(new EnvironmentElement(EnvElementType.Car, carPrefab, new Vector3(-1.16f, 1.45f, -0.58f), orientation, 40.0f,"Car"));
+        possibleEnvElements.Add(new EnvironmentElement(EnvElementType.Girl, girlPrefab, initialPos, orientation, 20.0f, "Girl"));
+        possibleEnvElements.Add(new EnvironmentElement(EnvElementType.Swagger, guyPrefab, initialPos, orientation, 20.0f,"Guy"));
 
 
         activeEnvElement = ChooseNewEnvElement();

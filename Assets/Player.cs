@@ -90,9 +90,17 @@ public class Player
     {
         GameObject sound = GameObject.FindGameObjectWithTag("Audio");
         AudioSource aux2 = sound.GetComponent<AudioSource>();
-
         var aux = Resources.Load("Damage1") as AudioClip;
         aux2.PlayOneShot(aux);
+
+        if(currAttackType == AttackType.Aerial)
+        {
+            GameObject sound1 = GameObject.FindGameObjectWithTag("Audio");
+            AudioSource aux1 = sound1.GetComponent<AudioSource>();
+            var aux3 = Resources.Load("Bottle") as AudioClip;
+            aux1.PlayOneShot(aux3);
+        }
+            
         this.reputation -= remove;
         if ( this.reputation < 0 ) {
             this.reputation = 0;
@@ -162,13 +170,18 @@ public class Player
                 this.aerialAttackFailSprite.SetActive(true);
                 gameManager.StartCoroutine(FinishAttack(aerialAttackFailSprite, 0, target));
             }
-            
+
         }
          
         
     }
     public void PerformVerbalAttack(Player target)
     {
+        GameObject sound = GameObject.FindGameObjectWithTag("Audio");
+        AudioSource aux1 = sound.GetComponent<AudioSource>();
+        var aux = Resources.Load("Verbal Insult") as AudioClip;
+        aux1.PlayOneShot(aux);
+
         if (this.currAttackType == AttackType.None)
         {
             int damage = 10;
@@ -187,6 +200,10 @@ public class Player
     }
     public void PerformBirdAttack(Player target)
     {
+        GameObject sound = GameObject.FindGameObjectWithTag("Audio");
+        AudioSource aux1 = sound.GetComponent<AudioSource>();
+        var aux = Resources.Load("Bird Insult") as AudioClip;
+        aux1.PlayOneShot(aux);
 
         if (this.currAttackType == AttackType.None)
         {
@@ -206,6 +223,10 @@ public class Player
     }
     public void PerformNoiseAttack(Player target)
     {
+        GameObject sound = GameObject.FindGameObjectWithTag("Audio");
+        AudioSource aux1 = sound.GetComponent<AudioSource>();
+        var aux = Resources.Load("Loud Noise") as AudioClip;
+        aux1.PlayOneShot(aux);
 
         if (this.currAttackType == AttackType.None)
         {
