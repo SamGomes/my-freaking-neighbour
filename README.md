@@ -1,4 +1,4 @@
-# My Freaking Neighbor!
+# My Freaking Neighbour!
 
 ![game logo](ReadmeImages/logo.png)
 
