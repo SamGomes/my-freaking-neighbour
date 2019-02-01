@@ -6,8 +6,8 @@ My freaking neighbor is a game about two neighbours who absolutely despise each 
 
 ## Controls:
 
-Player 1: W/A/S/D 
-Player 2: I/J/K/L
+ - Player 1: W/A/S/D 
+ - Player 2: I/J/K/L
 
 Each key performs a specific type of taunt or attack. Be careful, as performing certain acts while someone is crossing the road may have different effects. For example, using a verbal taunt while the cute girl next door walks by may actually reduce your reputation instead of your neighbour's!
 
